@@ -1,4 +1,5 @@
 import "./App.css";
+import authService from "./appwrite/auth";
 
 function App() {
   return (

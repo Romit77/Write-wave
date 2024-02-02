@@ -1,4 +1,4 @@
-import conf from "../config/conf.js";
+import conf from "../conf/conf";
 
 //eslint-disable-next-line
 import { Client, Account, ID } from "appwrite";
