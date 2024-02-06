@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import authService from "./appwrite/auth";
 import { login, logout } from "./store/authSlice";
 import { useState, useEffect } from "react";
+//eslint-disable-next-line
 import { Outlet } from "react-router-dom";
 import { Header, Footer } from "./components/index";
 
@@ -21,6 +22,7 @@ function App() {
       })
       .finally(() => setLoading(false));
     return () => {};
+    //eslint-disable-next-line
   }, []);
 
   return !loading ? (
