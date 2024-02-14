@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import authService from "./appwrite/auth";
 import { login, logout } from "./store/authSlice";
 import { useState, useEffect } from "react";
-//eslint-disable-next-line
 import { Outlet } from "react-router-dom";
 import { Header, Footer } from "./components/index";
 
@@ -29,7 +28,9 @@ function App() {
     <div className="min-h-screen flex flex-wrap content-between bg-gray-400">
       <div className="w-full block">
         <Header />
-        <main>{/* <Outlet /> */}</main>
+        <main>
+          <Outlet />
+        </main>
         <Footer />
       </div>
     </div>
