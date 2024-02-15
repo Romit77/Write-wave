@@ -1,30 +1,34 @@
 import conf from "../conf/conf";
 
+// see appwrite auth docs for below code
+
 //eslint-disable-next-line
 import { Client, Account, ID } from "appwrite";
 
 export class AuthService {
   client = new Client();
   account;
+  //here we createed the methods and then if we want to use these other places we do this.account and this.client etc
 
   constructor() {
     this.client
       .setEndpoint(conf.appwriteUrl)
       .setProject(conf.appwriteProjectId);
-    this.account = new Account(this.client);
+    this.account = new Account(this.client); // docs -> const account = new account(client) -- same code-- just made classes and constructors
   }
 
   async createAccount({ email, password, name }) {
     //eslint-disable-next-line
     try {
       const userAccount = await this.account.create(
-        ID.unique(),
+        ID.unique(), // appwrite docs says we need a user id first for create account
         email,
         password,
         name
       );
       if (userAccount) {
-        this.login({ email, password });
+        //cal method
+        return this.login({ email, password });
       } else {
         return userAccount;
       }
@@ -33,7 +37,7 @@ export class AuthService {
     }
   }
 
-  async login(email, password) {
+  async login({ email, password }) {
     //eslint-disable-next-line
     try {
       return await this.account.createEmailSession(email, password);
@@ -42,19 +46,20 @@ export class AuthService {
     }
   }
 
-  async logout() {
+  async getCurrentUser() {
+    // to check if user logged in or not
     //eslint-disable-next-line
     try {
-      await this.account.deleteSessions();
+      return await this.account.get(); // built in method
     } catch (error) {
       throw error;
     }
   }
 
-  async getCurrentUser() {
+  async logout() {
     //eslint-disable-next-line
     try {
-      return await this.account.get();
+      return await this.account.deleteSessions();
     } catch (error) {
       throw error;
     }

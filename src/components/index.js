@@ -9,9 +9,9 @@ import AuthLayout from "./AuthLayout";
 import Select from "./Select";
 import RTE from "./RTE";
 import Signup from "./Signup";
-import Header from "./Header/Header";
-import Footer from "./Footer/Footer";
-import LogoutBtn from "./Header/LogoutBtn";
+import Footer from "./footer/Footer";
+import Header from "./header/header";
+import LogoutBtn from "./header/LogoutBtn";
 
 export {
   Footer,

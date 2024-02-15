@@ -1,6 +1,6 @@
 export default function Button({
   //eslint-disable-next-line
-  children,
+  children, //default values
   //eslint-disable-next-line
   type = "button",
   //eslint-disable-next-line
@@ -9,12 +9,12 @@ export default function Button({
   textColor = "text-white",
   //eslint-disable-next-line
   className = "",
-  ...props
+  ...props //user kch aur props dia hai to use spread kar do
 }) {
   return (
     <button
       className={`px-4 py-2 rounded-lg ${bgColor} ${textColor} ${className}`}
-      {...props}
+      {...props} //jo extra user dia use use kar lia
     >
       {children}
     </button>

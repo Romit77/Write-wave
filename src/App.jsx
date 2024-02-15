@@ -1,27 +1,27 @@
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import authService from "./appwrite/auth";
 import { login, logout } from "./store/authSlice";
-import { useState, useEffect } from "react";
+import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
 import { Outlet } from "react-router-dom";
-import { Header, Footer } from "./components/index";
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setloading] = useState(true); // loadng state when data would be loading
   const dispatch = useDispatch();
 
   useEffect(() => {
     authService
       .getCurrentUser()
       .then((userData) => {
+        //user data is the data which was fetched from the getCurrentuser method
         if (userData) {
-          dispatch(login({ userData }));
+          dispatch(login({ userData })); //why object ask gpt
         } else {
           dispatch(logout());
         }
       })
-      .finally(() => setLoading(false));
-    return () => {};
-    //eslint-disable-next-line
+      .finally(() => setloading(false));
   }, []);
 
   return !loading ? (

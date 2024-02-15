@@ -1,5 +1,4 @@
-import conf from "../conf/conf";
-
+import conf from "../conf/conf.js";
 //eslint-disable-next-line
 import { Client, ID, Databases, Storage, Query } from "appwrite";
 
@@ -16,7 +15,7 @@ export class Service {
     this.bucket = new Storage(this.client);
   }
 
-  async createPost({ title, slug, Content, FeaturedImage, status, userId }) {
+  async createPost({ title, slug, Content, FeaturedImage, Status, UserId }) {
     try {
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
@@ -26,8 +25,8 @@ export class Service {
           title,
           Content,
           FeaturedImage,
-          status,
-          userId,
+          Status,
+          UserId,
         }
       );
     } catch (error) {
@@ -35,17 +34,19 @@ export class Service {
     }
   }
 
-  async updatePost(slug, { title, Content, FeaturedImage, status }) {
+  async updatePost(slug, { title, Content, FeaturedImage, Status }) {
+    //which dosument we need to update , its id is required in this method so we take the slug first
     try {
       return await this.databases.updateDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug,
         {
+          //what to update
           title,
           Content,
           FeaturedImage,
-          status,
+          Status,
         }
       );
     } catch (error) {
@@ -55,7 +56,7 @@ export class Service {
 
   async deletePost(slug) {
     try {
-      this.databases.deleteDocument(
+      await this.databases.deleteDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug
@@ -67,54 +68,62 @@ export class Service {
     }
   }
 
+  //how to get single post
+
   async getPost(slug) {
+    //eslint-disable-next-line
     try {
-      this.databases.getDocument(
+      return await this.databases.getDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug
       );
-      return true;
     } catch (error) {
-      console.log("error at getPost", error);
+      throw error;
     }
   }
 
-  async getPosts(queries = [Query.equal("status", "active")]) {
+  // query docs end
+  async getPosts(queries = [Query.equal("Status", "active")]) {
+    // here queries is just a variable ...main method is inside the [] brackets
+
+    // Query.equal("Status", "active")  -> return a document if attribute is equal to any value in the provided array
+
     try {
-      this.databases.listDocuments(
+      return await this.databases.listDocuments(
+        //see documentation for these methods
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
-        queries
+        queries // method inside the [] in queries is passed here
       );
     } catch (error) {
-      console.log("error at getPosts", error);
+      console.log(error);
       return false;
     }
   }
 
-  //file upload/delete methods
+  //file upload methods
 
   async uploadFile(file) {
     try {
-      this.databases.createDocument(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionId,
+      return await this.bucket.createFile(
+        conf.appwriteBucketId,
         ID.unique(),
         file
       );
     } catch (error) {
-      console.log("error at uploadFile", error);
+      console.log(error);
       return false;
     }
   }
 
+  //delete file
   async deleteFile(fileId) {
     try {
       await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
       return true;
     } catch (error) {
-      console.log("error at deleteFile", error);
+      console.log(error);
       return false;
     }
   }
@@ -123,6 +132,5 @@ export class Service {
     return this.bucket.getFilePreview(conf.appwriteBucketId, fileId);
   }
 }
-
 const service = new Service();
 export default service;
