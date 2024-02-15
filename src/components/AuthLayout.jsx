@@ -9,12 +9,6 @@ export default function Protected({ children, authentication = true }) {
   //to ask if logged in or not from store
   const authStatus = useSelector((state) => state.auth.status);
 
-  // if (authStatus ===true){
-  //     navigate("/")
-  // } else if (authStatus === false) {
-  //     navigate("/login")
-  // }
-
   useEffect(() => {
     if (authentication && authStatus !== authentication) {
       navigate("/login");

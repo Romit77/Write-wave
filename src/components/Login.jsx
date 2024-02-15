@@ -7,20 +7,18 @@ import authService from "../appwrite/auth";
 import { useForm } from "react-hook-form";
 
 function Login() {
-  //react hook form --> see documentation
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { register, handleSubmit } = useForm();
-  const [error, setError] = useState(""); // to handle errors
+  const [error, setError] = useState("");
   const login = async (data) => {
     setError("");
     try {
-      const session = await authService.login(data); //response ek session aata hai
-      //agar seesion hai to user logged in aur agar nhi hai to not logged in
+      const session = await authService.login(data);
       if (session) {
         const userData = await authService.getCurrentUser();
-        if (userData) dispatch(authLogin(userData)); //authlogin as imported as authlogin
+        if (userData) dispatch(authLogin(userData));
         navigate("/");
       }
     } catch (error) {
@@ -55,18 +53,15 @@ function Login() {
         {/* FORM START */}
 
         <form onSubmit={handleSubmit(login)} className="mt-8">
-          {/* jab bhi form submit hoga use handleSubmit */}
           <div className="space-y-5">
             <Input
               label="Email: "
               placeholder="Enter your email"
               type="email"
               {...register("email", {
-                //always use ...register
                 required: true,
                 validate: {
                   matchPatern: (value) =>
-                    // regex syntax -> characters btwn / and then .test(value) or (whaterver used)
                     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
                     "Email address must be a valid address",
                 },

@@ -7,16 +7,15 @@ import Footer from "./components/footer/Footer";
 import { Outlet } from "react-router-dom";
 
 function App() {
-  const [loading, setloading] = useState(true); // loadng state when data would be loading
+  const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
     authService
       .getCurrentUser()
       .then((userData) => {
-        //user data is the data which was fetched from the getCurrentuser method
         if (userData) {
-          dispatch(login({ userData })); //why object ask gpt
+          dispatch(login({ userData }));
         } else {
           dispatch(logout());
         }
