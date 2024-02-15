@@ -15,7 +15,7 @@ export class Service {
     this.bucket = new Storage(this.client);
   }
 
-  async createPost({ title, slug, Content, FeaturedImage, Status, UserId }) {
+  async createPost({ title, slug, Content, FeaturedImage, status, UserId }) {
     try {
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
@@ -25,7 +25,7 @@ export class Service {
           title,
           Content,
           FeaturedImage,
-          Status,
+          status,
           UserId,
         }
       );
@@ -34,8 +34,7 @@ export class Service {
     }
   }
 
-  async updatePost(slug, { title, Content, FeaturedImage, Status }) {
-    //which dosument we need to update , its id is required in this method so we take the slug first
+  async updatePost(slug, { title, Content, FeaturedImage, status }) {
     try {
       return await this.databases.updateDocument(
         conf.appwriteDatabaseId,
@@ -46,7 +45,7 @@ export class Service {
           title,
           Content,
           FeaturedImage,
-          Status,
+          status,
         }
       );
     } catch (error) {
@@ -68,8 +67,6 @@ export class Service {
     }
   }
 
-  //how to get single post
-
   async getPost(slug) {
     //eslint-disable-next-line
     try {
@@ -83,18 +80,12 @@ export class Service {
     }
   }
 
-  // query docs end
-  async getPosts(queries = [Query.equal("Status", "active")]) {
-    // here queries is just a variable ...main method is inside the [] brackets
-
-    // Query.equal("Status", "active")  -> return a document if attribute is equal to any value in the provided array
-
+  async getPosts(queries = [Query.equal("status", "active")]) {
     try {
       return await this.databases.listDocuments(
-        //see documentation for these methods
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
-        queries // method inside the [] in queries is passed here
+        queries
       );
     } catch (error) {
       console.log(error);

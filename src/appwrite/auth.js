@@ -1,27 +1,23 @@
 import conf from "../conf/conf";
 
-// see appwrite auth docs for below code
-
-//eslint-disable-next-line
 import { Client, Account, ID } from "appwrite";
 
 export class AuthService {
   client = new Client();
   account;
-  //here we createed the methods and then if we want to use these other places we do this.account and this.client etc
 
   constructor() {
     this.client
       .setEndpoint(conf.appwriteUrl)
       .setProject(conf.appwriteProjectId);
-    this.account = new Account(this.client); // docs -> const account = new account(client) -- same code-- just made classes and constructors
+    this.account = new Account(this.client);
   }
 
   async createAccount({ email, password, name }) {
     //eslint-disable-next-line
     try {
       const userAccount = await this.account.create(
-        ID.unique(), // appwrite docs says we need a user id first for create account
+        ID.unique(),
         email,
         password,
         name
